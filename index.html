@@ -29,7 +29,7 @@
       <input type="password" id="geminiApiKey" placeholder="Cole sua API Key aqui...">
       <button onclick="salvarApiKey()">Salvar</button>
     </div>
-    <small>Sem chave, o app usa o simulador inteligente offline automaticamente.</small>
+    <small>Sem chave, o app usa o simulador inteligente automaticamente.</small>
   </div>
 
   <!-- Abas de Navegação -->
@@ -50,18 +50,12 @@
 
     <div class="card">
       <h2>📸 Novo Relato com Visão Computacional</h2>
-      <p class="subtitle">Envie uma foto ou descrição. A IA classifica a gravidade e atualiza o mapa comunitário.</p>
+      <p class="subtitle">Digite qualquer município do Paraná. A IA valida o risco e atualiza o mapa.</p>
 
-      <label for="cidadeSelect">Município / Região:</label>
+      <label for="cidadeInput">Município do Paraná (399 cidades disponíveis):</label>
       <div class="location-row">
-        <select id="cidadeSelect">
-          <option value="-25.4284,-49.2733">Curitiba (Centro / Cajuru)</option>
-          <option value="-25.5163,-48.5092">Paranaguá (Litoral)</option>
-          <option value="-23.3045,-51.1696">Londrina (Norte)</option>
-          <option value="-24.9555,-53.4552">Cascavel (Oeste)</option>
-          <option value="-25.0916,-50.1668">Ponta Grossa (Campos Gerais)</option>
-          <option value="-25.5469,-54.5882">Foz do Iguaçu (Extremo Oeste)</option>
-        </select>
+        <input type="text" id="cidadeInput" list="listaCidadesPR" placeholder="Digite sua cidade (ex: Maringá, Guarapuava...)" value="Curitiba">
+        <datalist id="listaCidadesPR"></datalist>
         <button type="button" class="btn-gps" onclick="usarGPS()" title="Usar meu GPS">📍 GPS</button>
       </div>
 
@@ -73,13 +67,13 @@
         <option value="Bueiro entupido / drenagem crítica">Bueiro entupido / drenagem crítica</option>
       </select>
 
-      <label for="fotoUrbana">Foto da Ocorrência:</label>
+      <label for="fotoUrbana">Foto da Ocorrência (Opcional):</label>
       <input type="file" id="fotoUrbana" accept="image/*" onchange="previewImagem(this, 'previewUrbano')">
       <img id="previewUrbano" class="img-preview" alt="Pré-visualização da foto">
 
       <button class="btn-primary" onclick="processarAlertaUrbano()">Analisar com IA e Publicar Alerta</button>
 
-      <div id="loadingUrbano" class="loading">🤖 IA processando imagem e dados meteorológicos...</div>
+      <div id="loadingUrbano" class="loading">🤖 IA localizando município e analisando risco...</div>
       <div id="resultadoUrbano" class="ai-result"></div>
     </div>
   </section>
@@ -101,12 +95,13 @@
         <option value="Hortaliças (Agricultura Familiar)">Hortaliças (Agricultura Familiar)</option>
         <option value="Feijão">Feijão</option>
         <option value="Trigo">Trigo</option>
+        <option value="Café / Fruticultura">Café / Fruticultura</option>
       </select>
 
       <label for="sintomaAgro">Sintoma observado na plantação:</label>
       <input type="text" id="sintomaAgro" placeholder="Ex: Manchas amareladas e umidade excessiva nas folhas...">
 
-      <label for="fotoAgro">Foto da Folha / Planta:</label>
+      <label for="fotoAgro">Foto da Folha / Planta (Opcional):</label>
       <input type="file" id="fotoAgro" accept="image/*" onchange="previewImagem(this, 'previewAgro')">
       <img id="previewAgro" class="img-preview" alt="Pré-visualização da planta">
 
