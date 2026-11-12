@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardião PR — Sentinela Climático com IA</title>
+  <link rel="stylesheet" href="https://unpkg.com" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+  <header>
+    <div class="header-top">
+      <h1>🛡️ Guardião PR</h1>
+      <button class="btn-config" onclick="toggleConfig()" title="Configurar Chave API IA">⚙️ IA</button>
+    </div>
+    <p>Monitoramento El Niño & Defesa Comunitária</p>
+    <div class="status-bar">
+      <span id="aiStatusBadge" class="badge-ai">⚡ Modo Demo Inteligente</span>
+      <span id="contadorAlertas" class="badge-count">0 Alertas Ativos</span>
+    </div>
+  </header>
+
+  <!-- Painel Oculto para Chave Real do Google Gemini -->
+  <div id="configPanel" class="config-panel">
+    <label for="geminiApiKey">Chave API Google Gemini (Opcional para IA 100% Real):</label>
+    <div class="config-row">
+      <input type="password" id="geminiApiKey" placeholder="Cole sua API Key aqui...">
+      <button onclick="salvarApiKey()">Salvar</button>
+    </div>
+    <small>Sem chave, o app usa o simulador inteligente offline automaticamente.</small>
+  </div>
+
+  <!-- Abas de Navegação -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="urbano">🏙️ Alerta Urbano</button>
+    <button class="tab-btn" data-tab="agro">🌱 Modo Agro PR</button>
+    <button class="tab-btn" data-tab="historico">📋 Histórico</button>
+  </nav>
+
+  <!-- ABA 1: ALERTA URBANO E MAPA -->
+  <section id="urbano" class="section active">
+    <div class="alert-banner warning">
+      <strong>⚠️ Boletim IA — Paraná</strong>
+      Bloqueio atmosférico do El Niño provoca chuvas intensas e rajadas de vento. Monitore áreas de risco em tempo real.
+    </div>
+
+    <div id="map"></div>
+
+    <div class="card">
+      <h2>📸 Novo Relato com Visão Computacional</h2>
+      <p class="subtitle">Envie uma foto ou descrição. A IA classifica a gravidade e atualiza o mapa comunitário.</p>
+
+      <label for="cidadeSelect">Município / Região:</label>
+      <div class="location-row">
+        <select id="cidadeSelect">
+          <option value="-25.4284,-49.2733">Curitiba (Centro / Cajuru)</option>
+          <option value="-25.5163,-48.5092">Paranaguá (Litoral)</option>
+          <option value="-23.3045,-51.1696">Londrina (Norte)</option>
+          <option value="-24.9555,-53.4552">Cascavel (Oeste)</option>
+          <option value="-25.0916,-50.1668">Ponta Grossa (Campos Gerais)</option>
+          <option value="-25.5469,-54.5882">Foz do Iguaçu (Extremo Oeste)</option>
+        </select>
+        <button type="button" class="btn-gps" onclick="usarGPS()" title="Usar meu GPS">📍 GPS</button>
+      </div>
+
+      <label for="tipoOcorrencia">Tipo de Ocorrência:</label>
+      <select id="tipoOcorrencia">
+        <option value="Alagamento em via pública">Alagamento em via pública</option>
+        <option value="Risco de deslizamento / encosta">Rachadura / Risco de deslizamento</option>
+        <option value="Queda de árvore ou fiação elétrica">Queda de árvore ou fiação elétrica</option>
+        <option value="Bueiro entupido / drenagem crítica">Bueiro entupido / drenagem crítica</option>
+      </select>
+
+      <label for="fotoUrbana">Foto da Ocorrência:</label>
+      <input type="file" id="fotoUrbana" accept="image/*" onchange="previewImagem(this, 'previewUrbano')">
+      <img id="previewUrbano" class="img-preview" alt="Pré-visualização da foto">
+
+      <button class="btn-primary" onclick="processarAlertaUrbano()">Analisar com IA e Publicar Alerta</button>
+
+      <div id="loadingUrbano" class="loading">🤖 IA processando imagem e dados meteorológicos...</div>
+      <div id="resultadoUrbano" class="ai-result"></div>
+    </div>
+  </section>
+
+  <!-- ABA 2: MODO AGRO PR -->
+  <section id="agro" class="section">
+    <div class="alert-banner success">
+      <strong>🌾 Assistente Fitossanitário El Niño</strong>
+      Umidade relativa acima de 85% eleva o risco de fungos e pragas nas lavouras paranaenses.
+    </div>
+
+    <div class="card">
+      <h2>🍃 Diagnóstico Preventivo de Lavoura</h2>
+
+      <label for="culturaSelect">Cultura Agrícola:</label>
+      <select id="culturaSelect">
+        <option value="Soja">Soja</option>
+        <option value="Milho">Milho</option>
+        <option value="Hortaliças (Agricultura Familiar)">Hortaliças (Agricultura Familiar)</option>
+        <option value="Feijão">Feijão</option>
+        <option value="Trigo">Trigo</option>
+      </select>
+
+      <label for="sintomaAgro">Sintoma observado na plantação:</label>
+      <input type="text" id="sintomaAgro" placeholder="Ex: Manchas amareladas e umidade excessiva nas folhas...">
+
+      <label for="fotoAgro">Foto da Folha / Planta:</label>
+      <input type="file" id="fotoAgro" accept="image/*" onchange="previewImagem(this, 'previewAgro')">
+      <img id="previewAgro" class="img-preview" alt="Pré-visualização da planta">
+
+      <button class="btn-primary" onclick="processarDiagnosticoAgro()">Gerar Recomendação Agronômica IA</button>
+
+      <div id="loadingAgro" class="loading">🤖 IA avaliando risco fitossanitário...</div>
+      <div id="resultadoAgro" class="ai-result"></div>
+    </div>
+  </section>
+
+  <!-- ABA 3: HISTÓRICO DE ALERTAS SALVOS -->
+  <section id="historico" class="section">
+    <div class="card">
+      <div class="historico-header">
+        <h2>📋 Ocorrências Registradas</h2>
+        <button class="btn-clear" onclick="limparHistorico()">Limpar</button>
+      </div>
+      <p class="subtitle">Alertas validados pela IA e salvos na memória do dispositivo.</p>
+      <div id="listaHistorico" class="historico-lista"></div>
+    </div>
+  </section>
+</div>
+
+<script src="https://unpkg.com"></script>
+<script src="script.js"></script>
+</body>
+</html>
